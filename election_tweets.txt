@@ -1,0 +1,40 @@
+consumer_key <- "3VVlUBXWJ6f6OKidkr23KNmOi"
+consumer_secret <- "2A8CkFbYVXdjQnR8wqKSsn6lpGjaSOXy2d1BEOK75AN3vVpAxP"
+access_token <- "3092976523-RWw9yfknI6ESHhgWJaJQS1gZqo6ERa2AAf2GZfZ"
+access_secret <- "vrKWS231HatQoOstQc6uyWMuENwdjP0BmvqSnY4pwC94F"
+setup_twitter_oauth(consumer_key, consumer_secret, access_token, access_secret)
+
+library(twitteR)
+tweets_1 <- searchTwitter('#hilary', n=2000,lang="en")
+tweets_2 <- searchTwitter('#trump', n=2000,lang="en")
+tweets_3 <- searchTwitter('#uselection', n=2000,lang="en")
+tweets_4 <- searchTwitter('#democrat', n=2000,lang="en")
+tweets_5 <- searchTwitter('#republican', n=2000,lang="en")
+tweets_6 <- searchTwitter('#presidential', n=2000,lang="en")
+tweets_7 <- searchTwitter('#election', n=2000,lang="en")
+tweets_8 <- searchTwitter('#bernie', n=2000,lang="en")
+tweets_9 <- searchTwitter('#bencarson', n=2000,lang="en")
+tweets_10 <- searchTwitter('#donaldtrumo', n=2000,lang="en")
+
+clean = function(y){
+   tweets.text <- sapply(y, function(x) x$getText())
+   
+   tweets.text <- gsub("rt", "", tweets.text)
+   tweets.text <- gsub("@\\w+", "", tweets.text)
+   tweets.text <- gsub("[[:punct:]]", "", tweets.text)
+   tweets.text <- gsub("http\\w+", "", tweets.text)
+   tweets.text <- gsub("[ |\t]{2,}", "", tweets.text)
+   tweets.text <- gsub("^ ", "", tweets.text)
+   tweets.text <- gsub(" $", "", tweets.text)
+   tweets.text <- tolower(tweets.text)
+   library("tm")
+   corpus <- Corpus(VectorSource(tweets.text))
+   corpus <- tm_map(corpus,removeWords,c(stopwords('english')))
+   library("SnowballC")
+   corpus <- tm_map(corpus,stemDocument)
+   return(corpus)
+}
+corpus=c(corpus,corpus_i,recursive=T)
+dtm <- TermDocumentMatrix(corpus,control=list(minWordLength=5))
+
+  
